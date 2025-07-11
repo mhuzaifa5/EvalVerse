@@ -10,13 +10,13 @@ model_data = {
         "likes": {'3000'},
         "downloads": {"Jan": 4500, "Feb": 5800, "Mar": 6800, "Apr": 7500, "May": 8200},
         "company": "Deepseek AI",
-        "followers": "85K",
+        "followers": "85K",  # Unable to verify exact count
         "params": "16B",
-        "tensor_type": ["FP16", "BF16"],
-        "model_format": ["safetensors", "PyTorch"],
+        "tensor_type": ["BF16"],  # CORRECTED: Confirmed BF16 (bfloat16) as native type
+        "model_format": ["safetensors", "PyTorch"],  # CONFIRMED: Both formats available
         "Artificial Intelligence Index": 88,
-        "Input Context Length": 128000,
-        "Output Context Length": 128000,
+        "Input Context Length": "Unknown",  # CORRECTED: Unable to verify 128K claim
+        "Output Context Length": "Unknown",  # CORRECTED: Unable to verify 128K claim
         "last_updated": "20 days ago",
         "country": "China"
     },
@@ -24,13 +24,13 @@ model_data = {
         "likes": {'2500'},
         "downloads": {"Jan": 3500, "Feb": 4000, "Mar": 4500, "Apr": 5000, "May": 5800},
         "company": "Google",
-        "followers": "40K",
+        "followers": "217",  # CORRECTED: Actual follower count from HF page
         "params": "27B",
-        "tensor_type": ["BF16", "FP16"],
-        "model_format": ["PyTorch"],
+        "tensor_type": ["BF16", "FP16"],  # CONFIRMED: BF16 native, FP16 supported
+        "model_format": ["PyTorch"],  # CONFIRMED: PyTorch format
         "Artificial Intelligence Index": 90,
-        "Input Context Length": 8192,
-        "Output Context Length": 8192,
+        "Input Context Length": 8192,  # CONFIRMED: 8K context length
+        "Output Context Length": 8192,  # CONFIRMED: 8K context length
         "last_updated": "5 days ago",
         "country": "USA"
     },
@@ -38,13 +38,13 @@ model_data = {
         "likes": {'2800'},
         "downloads": {"Jan": 3000, "Feb": 3800, "Mar": 4500, "Apr": 5200, "May": 6000},
         "company": "Alibaba",
-        "followers": "55K",
+        "followers": "55K",  # Unable to verify
         "params": "72B",
-        "tensor_type": ["FP16", "BF16"],
-        "model_format": ["safetensors", "PyTorch"],
+        "tensor_type": ["FP16", "BF16"],  # Unable to verify exact specifications
+        "model_format": ["safetensors", "PyTorch"],  # Unable to verify
         "Artificial Intelligence Index": 86,
-        "Input Context Length": 32768,
-        "Output Context Length": 32768,
+        "Input Context Length": 32768,  # Unable to verify 32K claim
+        "Output Context Length": 32768,  # Unable to verify 32K claim
         "last_updated": "15 days ago",
         "country": "China"
     },
@@ -52,13 +52,13 @@ model_data = {
         "likes": {'8000'},
         "downloads": {"Apr": 15000, "May": 25000, "Jun": 35000},
         "company": "Meta",
-        "followers": "200K",
+        "followers": "200K",  # Unable to verify
         "params": "70B",
-        "tensor_type": ["BF16", "FP16"],
-        "model_format": ["safetensors", "PyTorch"],
+        "tensor_type": ["BF16", "FP16"],  # Unable to verify exact specifications
+        "model_format": ["safetensors", "PyTorch"],  # Unable to verify
         "Artificial Intelligence Index": 95,
-        "Input Context Length": 8192,
-        "Output Context Length": 8192,
+        "Input Context Length": 8192,  # Unable to verify 8K claim
+        "Output Context Length": 8192,  # Unable to verify 8K claim
         "last_updated": "1 day ago",
         "country": "USA"
     },
@@ -66,18 +66,17 @@ model_data = {
         "likes": {'4500'},
         "downloads": {"Jan": 5500, "Feb": 6800, "Mar": 8000, "Apr": 9000, "May": 9800},
         "company": "Mistral AI",
-        "followers": "105K",
+        "followers": "105K",  # Unable to verify
         "params": "7B",
-        "tensor_type": ["FP16", "BF16"],
-        "model_format": ["safetensors", "PyTorch"],
+        "tensor_type": ["FP16", "BF16"],  # Unable to verify exact specifications
+        "model_format": ["safetensors", "PyTorch"],  # Unable to verify
         "Artificial Intelligence Index": 89,
-        "Input Context Length": 32768,
-        "Output Context Length": 32768,
+        "Input Context Length": 32768,  # Unable to verify 32K claim
+        "Output Context Length": 32768,  # Unable to verify 32K claim
         "last_updated": "7 days ago",
         "country": "France"
     }
 }
-
 
 # ------------------ Streamlit Config ------------------
 st.set_page_config(layout="wide")
