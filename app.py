@@ -7,7 +7,7 @@ from llm_model import llm_summary,get_dashboard_summary,chat_with_llm
 # ------------------ Model Data ------------------
 model_data = {
     "Deepseek-MoE-16B": {
-        "likes": {'3000'},
+        "likes": {'145'},
         "downloads": {"Jan": 4500, "Feb": 5800, "Mar": 6800, "Apr": 7500, "May": 8200},
         "company": "Deepseek AI",
         "followers": "81.2K",
@@ -21,7 +21,7 @@ model_data = {
         "country": "China"
     },
     "Gemma-2-27B-IT": {
-        "likes": {'2500'},
+        "likes": {'547'},
         "downloads": {"Jan": 3500, "Feb": 4000, "Mar": 4500, "Apr": 5000, "May": 5800},
         "company": "Google",
         "followers": "19.2K",
@@ -35,7 +35,7 @@ model_data = {
         "country": "USA"
     },
     "Qwen1.5-72B-Chat": {
-        "likes": {'2800'},
+        "likes": {'217'},
         "downloads": {"Jan": 3000, "Feb": 3800, "Mar": 4500, "Apr": 5200, "May": 6000},
         "company": "Alibaba",
         "followers": "38K",
@@ -49,7 +49,7 @@ model_data = {
         "country": "China"
     },
     "Llama-3-70B-Instruct": {
-        "likes": {'8000'},
+        "likes": {'1490'},
         "downloads": {"Apr": 15000, "May": 25000, "Jun": 35000},
         "company": "Meta",
         "followers": "52K",
@@ -63,7 +63,7 @@ model_data = {
         "country": "USA"
     },
     "Mistral-7B-Instruct-v0.3": {
-        "likes": {'4500'},
+        "likes": {'1880'},
         "downloads": {"Jan": 5500, "Feb": 6800, "Mar": 8000, "Apr": 9000, "May": 9800},
         "company": "Mistral AI",
         "followers": "10.3K",
