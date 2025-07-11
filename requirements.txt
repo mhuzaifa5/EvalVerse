@@ -1,0 +1,5 @@
+pandas
+plotly
+huggingface_hub
+python-dotenv
+google-generativeai
