@@ -9,7 +9,7 @@ Inspired by Google Trends, EvalVerse allows users to select multiple AI models a
 
 ---
 
-## 🚀 Live Demo  
+## 🚀 Live Demo :  https://evalverse.streamlit.app/
 To be hosted soon as a Hugging Face **"CompareHub"** tab on the front page.  
 Until then, API improvements and bug fixes are being contributed to Hugging Face's model card infrastructure.
 
