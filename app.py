@@ -63,6 +63,7 @@ manual_model_data = {
 }
 
 # ------------------ Fetch from HuggingFace ------------------
+load_dotenv(r'api.env')
 api_token = os.getenv("HF_API_KEY")
 if api_token:
     login(token=api_token)
