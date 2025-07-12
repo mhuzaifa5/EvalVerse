@@ -3,113 +3,192 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from llm_model import llm_summary, get_dashboard_summary, chat_with_llm
-from huggingface_hub import HfApi, login
-from datetime import datetime, timezone
-from dotenv import load_dotenv
-import os 
+# from huggingface_hub import HfApi, login
+# from datetime import datetime, timezone
+# from dotenv import load_dotenv
+# import os 
 
+#---------------------Model Data-------------------------
+model_data={'Deepseek-MoE-16B': {'Artificial Intelligence Index': 88,
+                      'Input Context Length': 128000,
+                      'Output Context Length': 128000,
+                      'company': 'Deepseek AI',
+                      'country': 'China',
+                      'downloads': {'Apr': 7500,
+                                    'Feb': 5800,
+                                    'Jan': 4500,
+                                    'Mar': 6800,
+                                    'May': 8200},
+                      'followers': '81.2K',
+                      'last_updated': '523 days ago',
+                      'likes': {'145'},
+                      'model_format': ['safetensors'],
+                      'params': '16B',
+                      'tensor_type': ['BF16']},
+ 'Gemma-2-27B-IT': {'Artificial Intelligence Index': 90,
+                    'Input Context Length': 8192,
+                    'Output Context Length': 8192,
+                    'company': 'Google',
+                    'country': 'USA',
+                    'downloads': {'Apr': 5000,
+                                  'Feb': 4000,
+                                  'Jan': 3500,
+                                  'Mar': 4500,
+                                  'May': 5800},
+                    'followers': '19.2K',
+                    'last_updated': '318 days ago',
+                    'likes': {'547'},
+                    'model_format': ['safetensors'],
+                    'params': '27B',
+                    'tensor_type': ['BF16']},
+ 'Llama-3-70B-Instruct': {'Artificial Intelligence Index': 95,
+                          'Input Context Length': 8192,
+                          'Output Context Length': 8192,
+                          'company': 'Meta',
+                          'country': 'USA',
+                          'downloads': {'Apr': 15000,
+                                        'Jun': 35000,
+                                        'May': 25000},
+                          'followers': '52K',
+                          'last_updated': '23 days ago',
+                          'likes': {'1486'},
+                          'model_format': ['safetensors', 'pytorch'],
+                          'params': '70B',
+                          'tensor_type': ['BF16']},
+ 'Mistral-7B-Instruct-v0.3': {'Artificial Intelligence Index': 89,
+                              'Input Context Length': 32768,
+                              'Output Context Length': 32768,
+                              'company': 'Mistral AI',
+                              'country': 'France',
+                              'downloads': {'Apr': 9000,
+                                            'Feb': 6800,
+                                            'Jan': 5500,
+                                            'Mar': 8000,
+                                            'May': 9800},
+                              'followers': '10.3K',
+                              'last_updated': '324 days ago',
+                              'likes': {'1876'},
+                              'model_format': ['safetensors'],
+                              'params': '7B',
+                              'tensor_type': ['BF16']},
+ 'Qwen1.5-72B-Chat': {'Artificial Intelligence Index': 86,
+                      'Input Context Length': 32768,
+                      'Output Context Length': 32768,
+                      'company': 'Alibaba',
+                      'country': 'China',
+                      'downloads': {'Apr': 5200,
+                                    'Feb': 3800,
+                                    'Jan': 3000,
+                                    'Mar': 4500,
+                                    'May': 6000},
+                      'followers': '38K',
+                      'last_updated': '277 days ago',
+                      'likes': {'217'},
+                      'model_format': ['safetensors'],
+                      'params': '72B',
+                      'tensor_type': ['BF16']}}
 # ------------------ Manual Model Data ------------------
-manual_model_data = {
-    "Deepseek-MoE-16B": {
-        "company": "Deepseek AI",
-        "followers": "81.2K",
-        "Artificial Intelligence Index": 88,
-        "Input Context Length": 128000,
-        "Output Context Length": 128000,
-        "country": "China",
-        "downloads": {"Jan": 4500, "Feb": 5800, "Mar": 6800, "Apr": 7500, "May": 8200},
-        "likes": {"145"}
-    },
-    "Gemma-2-27B-IT": {
-        "company": "Google",
-        "followers": "19.2K",
-        "Artificial Intelligence Index": 90,
-        "Input Context Length": 8192,
-        "Output Context Length": 8192,
-        "country": "USA",
-        "downloads": {"Jan": 3500, "Feb": 4000, "Mar": 4500, "Apr": 5000, "May": 5800},
-        "likes": {"547"}
-    },
-    "Qwen1.5-72B-Chat": {
-        "company": "Alibaba",
-        "followers": "38K",
-        "Artificial Intelligence Index": 86,
-        "Input Context Length": 32768,
-        "Output Context Length": 32768,
-        "country": "China",
-        "downloads": {"Jan": 3000, "Feb": 3800, "Mar": 4500, "Apr": 5200, "May": 6000},
-        "likes": {"217"}
-    },
-    "Llama-3-70B-Instruct": {
-        "company": "Meta",
-        "followers": "52K",
-        "Artificial Intelligence Index": 95,
-        "Input Context Length": 8192,
-        "Output Context Length": 8192,
-        "country": "USA",
-        "downloads": {"Apr": 15000, "May": 25000, "Jun": 35000},
-        "likes": {"1490"}
-    },
-    "Mistral-7B-Instruct-v0.3": {
-        "company": "Mistral AI",
-        "followers": "10.3K",
-        "Artificial Intelligence Index": 89,
-        "Input Context Length": 32768,
-        "Output Context Length": 32768,
-        "country": "France",
-        "downloads": {"Jan": 5500, "Feb": 6800, "Mar": 8000, "Apr": 9000, "May": 9800},
-        "likes": {"1880"}
-    }
-}
+# manual_model_data = {
+#     "Deepseek-MoE-16B": {
+#         "company": "Deepseek AI",
+#         "followers": "81.2K",
+#         "Artificial Intelligence Index": 88,
+#         "Input Context Length": 128000,
+#         "Output Context Length": 128000,
+#         "country": "China",
+#         "downloads": {"Jan": 4500, "Feb": 5800, "Mar": 6800, "Apr": 7500, "May": 8200},
+#         "likes": {"145"}
+#     },
+#     "Gemma-2-27B-IT": {
+#         "company": "Google",
+#         "followers": "19.2K",
+#         "Artificial Intelligence Index": 90,
+#         "Input Context Length": 8192,
+#         "Output Context Length": 8192,
+#         "country": "USA",
+#         "downloads": {"Jan": 3500, "Feb": 4000, "Mar": 4500, "Apr": 5000, "May": 5800},
+#         "likes": {"547"}
+#     },
+#     "Qwen1.5-72B-Chat": {
+#         "company": "Alibaba",
+#         "followers": "38K",
+#         "Artificial Intelligence Index": 86,
+#         "Input Context Length": 32768,
+#         "Output Context Length": 32768,
+#         "country": "China",
+#         "downloads": {"Jan": 3000, "Feb": 3800, "Mar": 4500, "Apr": 5200, "May": 6000},
+#         "likes": {"217"}
+#     },
+#     "Llama-3-70B-Instruct": {
+#         "company": "Meta",
+#         "followers": "52K",
+#         "Artificial Intelligence Index": 95,
+#         "Input Context Length": 8192,
+#         "Output Context Length": 8192,
+#         "country": "USA",
+#         "downloads": {"Apr": 15000, "May": 25000, "Jun": 35000},
+#         "likes": {"1490"}
+#     },
+#     "Mistral-7B-Instruct-v0.3": {
+#         "company": "Mistral AI",
+#         "followers": "10.3K",
+#         "Artificial Intelligence Index": 89,
+#         "Input Context Length": 32768,
+#         "Output Context Length": 32768,
+#         "country": "France",
+#         "downloads": {"Jan": 5500, "Feb": 6800, "Mar": 8000, "Apr": 9000, "May": 9800},
+#         "likes": {"1880"}
+#     }
+# }
 
-# ------------------ Fetch from HuggingFace ------------------
-load_dotenv(r'api.env')
-# api_token = os.getenv("HF_API_KEY")
-api_token='HF_API_KEY'
-if api_token:
-    login(token=api_token)
+# # ------------------ Fetch from HuggingFace ------------------
+# load_dotenv(r'api.env')
+# # api_token = os.getenv("HF_API_KEY")
+# api_token='HF_API_KEY'
+# if api_token:
+#     login(token=api_token)
 
-api = HfApi()
+# api = HfApi()
 
-hf_model_ids = {
-    "Deepseek-MoE-16B": "deepseek-ai/deepseek-moe-16b-chat",
-    "Gemma-2-27B-IT": "google/gemma-2-27b-it",
-    "Qwen1.5-72B-Chat": "Qwen/Qwen1.5-72B-Chat",
-    "Llama-3-70B-Instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
-    "Mistral-7B-Instruct-v0.3": "mistralai/Mistral-7B-Instruct-v0.3"
-}
+# hf_model_ids = {
+#     "Deepseek-MoE-16B": "deepseek-ai/deepseek-moe-16b-chat",
+#     "Gemma-2-27B-IT": "google/gemma-2-27b-it",
+#     "Qwen1.5-72B-Chat": "Qwen/Qwen1.5-72B-Chat",
+#     "Llama-3-70B-Instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
+#     "Mistral-7B-Instruct-v0.3": "mistralai/Mistral-7B-Instruct-v0.3"
+# }
 
-model_data = {}
+# model_data = {}
 
-for name, model_id in hf_model_ids.items():
-    try:
-        model_info = api.model_info(model_id)
-        last_modified = model_info.last_modified or model_info.created_at
-        days_ago = (datetime.now(timezone.utc) - last_modified).days
-        last_updated = f"{days_ago} days ago"
+# for name, model_id in hf_model_ids.items():
+#     try:
+#         model_info = api.model_info(model_id)
+#         last_modified = model_info.last_modified or model_info.created_at
+#         days_ago = (datetime.now(timezone.utc) - last_modified).days
+#         last_updated = f"{days_ago} days ago"
 
-        tensor_type = list(model_info.safetensors.parameters.keys()) if model_info.safetensors else ["Unknown"]
-        param_total = model_info.safetensors.total if model_info.safetensors else 0
-        params = f"{int(param_total / 1e9)}B" if param_total else "Unknown"
+#         tensor_type = list(model_info.safetensors.parameters.keys()) if model_info.safetensors else ["Unknown"]
+#         param_total = model_info.safetensors.total if model_info.safetensors else 0
+#         params = f"{int(param_total / 1e9)}B" if param_total else "Unknown"
 
-        model_data[name] = {
-            "likes": manual_model_data[name]["likes"],
-            "downloads": manual_model_data[name]["downloads"],
-            "company": manual_model_data[name]["company"],
-            "followers": manual_model_data[name]["followers"],
-            "params": params,
-            "tensor_type": tensor_type,
-            "model_format": list(set(model_info.tags) & {"safetensors", "pytorch", "gguf", "tensorflow"}),
-            "Artificial Intelligence Index": manual_model_data[name]["Artificial Intelligence Index"],
-            "Input Context Length": manual_model_data[name]["Input Context Length"],
-            "Output Context Length": manual_model_data[name]["Output Context Length"],
-            "last_updated": last_updated,
-            "country": manual_model_data[name]["country"]
-        }
+#         model_data[name] = {
+#             "likes": manual_model_data[name]["likes"],
+#             "downloads": manual_model_data[name]["downloads"],
+#             "company": manual_model_data[name]["company"],
+#             "followers": manual_model_data[name]["followers"],
+#             "params": params,
+#             "tensor_type": tensor_type,
+#             "model_format": list(set(model_info.tags) & {"safetensors", "pytorch", "gguf", "tensorflow"}),
+#             "Artificial Intelligence Index": manual_model_data[name]["Artificial Intelligence Index"],
+#             "Input Context Length": manual_model_data[name]["Input Context Length"],
+#             "Output Context Length": manual_model_data[name]["Output Context Length"],
+#             "last_updated": last_updated,
+#             "country": manual_model_data[name]["country"]
+#         }
 
-    except Exception as e:
-        st.warning(f"Failed to fetch HuggingFace data for {name}: {e}")
-        model_data[name] = manual_model_data[name]
+#     except Exception as e:
+#         st.warning(f"Failed to fetch HuggingFace data for {name}: {e}")
+#         model_data[name] = manual_model_data[name]
 
 
 # ------------------ Streamlit Config ------------------
